@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+
 public class TanksGenericCollections<T extends DrawingArmoVehicle, U extends IMoveableObject> {
     // Высота и Ширина окна прорисовки
     private int _pictureWidth;
@@ -40,9 +41,8 @@ public class TanksGenericCollections<T extends DrawingArmoVehicle, U extends IMo
     }
 
     // Получение объекта IMoveableObject
-    public U GetU(int pos)
-    {
-        return (U)_collection.Get(pos).GetMoveableObject();
+    public U GetU(int pos) {
+        return (U) _collection.Get(pos).GetMoveableObject();
     }
 
     // Вывод всего набора объектов
@@ -67,16 +67,18 @@ public class TanksGenericCollections<T extends DrawingArmoVehicle, U extends IMo
         }
     }
 
+    // Метод прорисовки объектов
     private void DrawObjects(Graphics g) {
-        for (int i = 0; i < _collection.Count; i++) {
-            T t = _collection.Get(i);
-            if (t != null) {
-                t.SetPosition((i % (_pictureWidth / _placeSizeWidth)) * _placeSizeWidth, (i / (_pictureWidth / _placeSizeWidth)) * _placeSizeHeight);
-                if (t instanceof DrawingTank)
-                    ((DrawingTank) t).DrawTransport((Graphics2D)g);
+        int i = 0;
+        for (T tank : _collection.GetTanks(100)) {
+            if (tank != null) {
+                tank.SetPosition((i % (_pictureWidth / _placeSizeWidth)) * _placeSizeWidth, (i / (_pictureWidth / _placeSizeWidth)) * _placeSizeHeight);
+                if (tank instanceof DrawingTank)
+                    ((DrawingTank) tank).DrawTransport((Graphics2D) g);
                 else
-                    t.DrawTransport((Graphics2D)g);
+                    tank.DrawTransport((Graphics2D) g);
             }
+            i++;
         }
     }
 }
