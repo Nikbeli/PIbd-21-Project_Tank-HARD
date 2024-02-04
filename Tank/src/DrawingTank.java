@@ -4,6 +4,7 @@ public class DrawingTank extends DrawingArmoVehicle {
     protected IOrnamentForm OrnamentsForm;
     private boolean OrnamentAdd;
 
+    // Конструктор (Инициализация характеристик)
     public DrawingTank(int speed, double weight, Color bodyColor, int _numWheel, Color additionalColor, boolean bodyKit, boolean caterpillar, boolean tower, int width, int height, boolean ornamentAdd) {
         super(speed, weight, bodyColor, _numWheel, width, height);
         ArmoVehicle = new EntityTank(speed, weight, bodyColor, _numWheel, additionalColor, bodyKit, caterpillar, tower);
@@ -12,9 +13,16 @@ public class DrawingTank extends DrawingArmoVehicle {
         this.OrnamentAdd = ornamentAdd;
     }
 
+    // Ещё один конструктор
+    public DrawingTank(EntityTank tank, IOrnamentForm _wheelDrawing, int width, int height ){
+        super(tank, _wheelDrawing, width, height);
+        if (height < _pictureHeight || width < _pictureWidth)
+            return;
+    }
+
     // Установка позиции
     public void SetPosition(int x, int y) {
-       _startPosX = Math.min(x, _pictureWidth-_TankWidth);
+        _startPosX = Math.min(x, _pictureWidth-_TankWidth);
         _startPosY = Math.min(y, _pictureHeight-_TankHeight);
     }
 

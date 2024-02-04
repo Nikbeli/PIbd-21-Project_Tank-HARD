@@ -54,8 +54,8 @@ public class DrawingWheelsCombination implements IOrnamentForm {
 
             CaterpillarStar(g,_startPosX + 5, _startPosY + 12);
             CaterpillarStar(g,_startPosX + 105, _startPosY + 12);
-
         }
+
         if (wheels == CountWheels.Three) {
             DrawWheels(g,_startPosX, _startPosY);
             DrawWheels(g,_startPosX + 50, _startPosY);
@@ -85,8 +85,8 @@ public class DrawingWheelsCombination implements IOrnamentForm {
             CaterpillarStar(g,_startPosX + 30, _startPosY + 12);
             CaterpillarStar(g,_startPosX + 55, _startPosY + 12);
             CaterpillarStar(g,_startPosX + 105, _startPosY + 12);
-
         }
+
         if(wheels == CountWheels.Five) {
             DrawWheels(g,_startPosX, _startPosY);
             DrawWheels(g,_startPosX + 25, _startPosY);

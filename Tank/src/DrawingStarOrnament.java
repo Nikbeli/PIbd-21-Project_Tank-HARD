@@ -37,6 +37,7 @@ public class DrawingStarOrnament implements IOrnamentForm {
         g.setColor(Color.BLACK);
         g.fillOval(10 + _startPosX, 42 + _startPosY, 20, 20);
     }
+
     public void Draw(Graphics g, int _startPosX, int _startPosY) {
         if (wheels == CountWheels.Two){
             DrawWheels(g,_startPosX, _startPosY);
