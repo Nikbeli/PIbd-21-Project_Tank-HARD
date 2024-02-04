@@ -74,11 +74,11 @@ public class FormTankCollection {
                             return;
                         }
 
-                        FormTank form = new FormTank();
-                        form.buttonSelectTank.addActionListener(
+                        FormTankConfig form = new FormTankConfig();
+                        form.buttonAdd.addActionListener(
                                 new ActionListener() {
                                     public void actionPerformed(ActionEvent e) {
-                                        if (obj.Add(form._drawingVehicle) != -1) {
+                                        if (obj != null && obj.Add(form._vehicle) != -1) {
                                             JOptionPane.showMessageDialog(null, "Объект добавлен", "Информация", JOptionPane.INFORMATION_MESSAGE);
                                             Draw();
                                         } else {
@@ -229,11 +229,14 @@ public class FormTankCollection {
         Frame.add(ButtonRefreshCollection);
         Frame.add(TextBoxNumber);
         Frame.add(toFormTankGenerate);
+
         Frame.add(buttonAddSet);
         Frame.add(textBoxSetName);
         Frame.add(jListStorage);
         Frame.add(buttonRemoveSet);
+
         Frame.add(buttonGetRemoved);
+
         Frame.setVisible(true);
     }
 }

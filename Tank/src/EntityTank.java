@@ -2,6 +2,7 @@ import java.awt.*;
 
 public class EntityTank extends EntityArmoVehicle {
     public Color AdditionalColor;
+    public void setAdditionalColor(Color color) { AdditionalColor = color; }
     public boolean BodyKit;
     public boolean Caterpillar;
     public boolean Tower;

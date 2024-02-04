@@ -14,10 +14,16 @@ public class DrawingTank extends DrawingArmoVehicle {
     }
 
     // Ещё один конструктор
-    public DrawingTank(EntityTank tank, IOrnamentForm _wheelDrawing, int width, int height) {
-        super(tank, _wheelDrawing, width, height);
+    public DrawingTank(int speed, float weight, Color bodyColor, int _numWheel, Color additionalColor, boolean bodyKit, boolean caterpillar, boolean tower, int width, int height) {
+        super(speed, weight, bodyColor, _numWheel, width, height);
+        ArmoVehicle=new EntityTank(speed,weight,bodyColor,_numWheel, additionalColor,bodyKit,caterpillar, tower);
+    }
+
+    public DrawingTank(EntityTank armoVehicle, IOrnamentForm _wheelDrawing, int width, int height) {
+        super(armoVehicle, _wheelDrawing, width, height);
         if (height < _pictureHeight || width < _pictureWidth)
             return;
+        ArmoVehicle = armoVehicle;
     }
 
     // Установка позиции
