@@ -3,6 +3,9 @@ import java.awt.*;
 public class EntityArmoVehicle {
     public int Speed;
     public double Weight;
+    public double getWeight() {
+        return Weight;
+    }
     public Color BodyColor;
     public double Step;
     public int numWheel;

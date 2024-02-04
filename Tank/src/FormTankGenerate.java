@@ -6,24 +6,24 @@ import java.awt.event.ActionListener;
 public class FormTankGenerate extends JFrame {
     static int pictureBoxWidth = 560;
     static int pictureBoxHeight = 560;
-    public DrawingArmoVehicle _drawingVehicle;
+    public DrawingArmoVehicle _drawingTank;
     private class Canvas extends JComponent{
         public Canvas() {
         }
         public void paintComponent (Graphics g){
-            if (_drawingVehicle == null){
+            if (_drawingTank == null){
                 return;
             }
             super.paintComponents (g) ;
             Graphics2D g2d = (Graphics2D)g;
-            _drawingVehicle.SetPosition(250, 250);
-            _drawingVehicle.DrawTransport(g2d);
+            _drawingTank.SetPosition(250, 250);
+            _drawingTank.DrawTransport(g2d);
             super.repaint();
         }
     }
     DoubleParametrized<EntityArmoVehicle, IOrnamentForm> genericTankGenerate;
     public FormTankGenerate(){
-        _drawingVehicle = null;
+        _drawingTank = null;
         Canvas canv = new Canvas();
         setSize (640, 640);
         setLayout(null);
@@ -37,19 +37,19 @@ public class FormTankGenerate extends JFrame {
         genericTankGenerate.Add(new DrawingStarOrnament());
         genericTankGenerate.Add(new DrawingWheelsCombination());
 
-        JButton createButton = new JButton("Сгенерировать");
-        createButton.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e){
-                        _drawingVehicle = genericTankGenerate.GenerateTank(pictureBoxWidth,pictureBoxHeight);
-                        canv.repaint();
-                    }
-                }
+        JButton creatButton = new JButton("Сгенерировать");
+        creatButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e){
+                    _drawingTank = genericTankGenerate.GenerateTank(pictureBoxWidth,pictureBoxHeight);
+                    canv.repaint();
+                }   
+            }
         );
-        createButton.setBounds(pictureBoxWidth/2 - 40, pictureBoxHeight-20, 180, 20);
+        creatButton.setBounds(pictureBoxWidth/2 - 40, pictureBoxHeight-20, 180, 20);
 
         add(canv);
-        add(createButton);
+        add(creatButton);
         setVisible(true);
     }
 }

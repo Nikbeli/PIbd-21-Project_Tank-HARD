@@ -10,7 +10,9 @@ public class DrawingArmoVehicle {
     protected int _startPosY;
     protected int _TankWidth = 160;
     protected int _TankHeight = 55;
-    public IMoveableObject GetMoveableObject() { return new DrawingObjectTank(this);}
+    public IMoveableObject GetMoveableObject() {
+        return new DrawingObjectTank(this);
+    }
 
     public DrawingArmoVehicle(int speed, double weight, Color bodyColor, int _numWheel, int width, int height) {
         _pictureWidth = width;
@@ -52,10 +54,21 @@ public class DrawingArmoVehicle {
         _startPosY = Math.min(y, _pictureHeight - _TankHeight);
     }
 
-    public int GetPosX () { return  _startPosX; }
-    public int GetPosY () { return _startPosY; }
-    public int GetWidth () { return  _TankWidth; }
-    public int GetHeight () { return  _TankHeight; }
+    public int GetPosX () {
+        return _startPosX;
+    }
+
+    public int GetPosY () {
+        return _startPosY;
+    }
+
+    public int GetWidth () {
+        return _TankWidth;
+    }
+
+    public int GetHeight () {
+        return _TankHeight;
+    }
 
     public boolean CanMove(Direction direction) {
         if (ArmoVehicle == null) {
@@ -99,6 +112,7 @@ public class DrawingArmoVehicle {
         }
     }
 
+    // Прорисовка объекта
     public void DrawTransport(Graphics2D g) {
         if (ArmoVehicle == null) {
             return;
@@ -106,11 +120,11 @@ public class DrawingArmoVehicle {
 
         // body
         g.setColor(ArmoVehicle.BodyColor);
-        int[] xPoints = {_startPosX + 5, _startPosX + 140, _startPosX + 130,_startPosX + 12};
+        int[] xPoints = {_startPosX + 5, _startPosX + 140, _startPosX + 130, _startPosX + 12};
         int[] yPoints = {_startPosY + 30, _startPosY + 30, _startPosY + 42, _startPosY + 42};
         int nPoints = xPoints.length;
-        g.drawPolygon(xPoints,yPoints,nPoints);
-        g.fillPolygon(xPoints,yPoints,nPoints);
+        g.drawPolygon(xPoints, yPoints, nPoints);
+        g.fillPolygon(xPoints, yPoints, nPoints);
 
         //wheels
         OrnamentsForm.Draw(g, _startPosX, _startPosY);
