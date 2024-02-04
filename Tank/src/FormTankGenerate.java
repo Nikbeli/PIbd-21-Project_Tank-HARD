@@ -38,7 +38,7 @@ public class FormTankGenerate extends JFrame {
         genericTankGenerate.Add(new DrawingWheelsCombination());
 
         JButton createButton  = new JButton("Сгенерировать");
-        createButton .addActionListener(
+        createButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e){
                     _drawingVehicle = genericTankGenerate.GenerateTank(pictureBoxWidth,pictureBoxHeight);
@@ -49,7 +49,7 @@ public class FormTankGenerate extends JFrame {
         createButton .setBounds(pictureBoxWidth/2 - 40, pictureBoxHeight-20, 180, 20);
 
         add(canv);
-        add(createButton );
+        add(createButton);
         setVisible(true);
     }
 }
