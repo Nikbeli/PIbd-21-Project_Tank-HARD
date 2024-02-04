@@ -22,7 +22,7 @@ public class DrawingTank extends DrawingArmoVehicle {
 
     // Установка позиции
     public void SetPosition(int x, int y) {
-       _startPosX = Math.min(x, _pictureWidth-_TankWidth);
+        _startPosX = Math.min(x, _pictureWidth-_TankWidth);
         _startPosY = Math.min(y, _pictureHeight-_TankHeight);
     }
 

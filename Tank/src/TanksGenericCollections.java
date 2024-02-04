@@ -6,7 +6,7 @@ public class TanksGenericCollections<T extends DrawingArmoVehicle, U extends IMo
     private int _pictureWidth;
     private int _pictureHeight;
 
-    // Размер занимаемого объектом места (ширина и высота)
+    // Размеры занимаемого объектом места (ширина и высота)
     private int _placeSizeWidth = 180;
     private int _placeSizeHeight = 90;
 

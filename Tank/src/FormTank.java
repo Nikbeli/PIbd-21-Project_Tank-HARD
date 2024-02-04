@@ -49,22 +49,22 @@ public class FormTank {
                 });
         JButton up = new JButton();
         up.setName("up");
-        ImageIcon iconUp = new ImageIcon("Tank//Resources//KeyUp.png");
+        ImageIcon iconUp = new ImageIcon("Resources//KeyUp.png");
         up.setIcon(iconUp);
 
         JButton down = new JButton();
         down.setName("down");
-        ImageIcon iconDown = new ImageIcon("Tank//Resources//KeyDown.png");
+        ImageIcon iconDown = new ImageIcon("Resources//KeyDown.png");
         down.setIcon(iconDown);
 
         JButton left = new JButton();
         left.setName("left");
-        ImageIcon iconLeft = new ImageIcon("Tank//Resources//KeyLeft.png");
+        ImageIcon iconLeft = new ImageIcon("Resources//KeyLeft.png");
         left.setIcon(iconLeft);
 
         JButton right = new JButton();
         right.setName("right");
-        ImageIcon iconRight = new ImageIcon("Tank//Resources//KeyRight.png");
+        ImageIcon iconRight = new ImageIcon("Resources//KeyRight.png");
         right.setIcon(iconRight);
 
         buttonStrategysStep.addActionListener(

@@ -94,7 +94,7 @@ public class FormTankCollection {
         toFormTankGenerate.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        FormTankGenerate formTankGenerate  = new FormTankGenerate();
+                        FormTankGenerate formTankGenerate = new FormTankGenerate();
                     }
                 }
         );
