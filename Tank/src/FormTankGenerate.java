@@ -6,28 +6,28 @@ import java.awt.event.ActionListener;
 public class FormTankGenerate extends JFrame {
     static int pictureBoxWidth = 560;
     static int pictureBoxHeight = 560;
-    public DrawingArmoVehicle _drawingTank;
+    public DrawingArmoVehicle _drawingVehicle;
     private class Canvas extends JComponent{
         public Canvas() {
         }
         public void paintComponent (Graphics g){
-            if (_drawingTank == null){
+            if (_drawingVehicle == null){
                 return;
             }
             super.paintComponents (g) ;
             Graphics2D g2d = (Graphics2D)g;
-            _drawingTank.SetPosition(250, 250);
-            _drawingTank.DrawTransport(g2d);
+            _drawingVehicle.SetPosition(250, 250);
+            _drawingVehicle.DrawTransport(g2d);
             super.repaint();
         }
     }
     DoubleParametrized<EntityArmoVehicle, IOrnamentForm> genericTankGenerate;
     public FormTankGenerate(){
-        _drawingTank = null;
+        _drawingVehicle = null;
         Canvas canv = new Canvas();
-        setSize (640, 640);
+        setSize(640, 640);
         setLayout(null);
-        canv.setBounds(0,0,pictureBoxWidth, pictureBoxHeight);
+        canv.setBounds(0,0, pictureBoxWidth, pictureBoxHeight);
 
         genericTankGenerate = new DoubleParametrized<>();
         genericTankGenerate.Add(new EntityArmoVehicle(100, 100, Color.BLUE, 2));
@@ -37,19 +37,19 @@ public class FormTankGenerate extends JFrame {
         genericTankGenerate.Add(new DrawingStarOrnament());
         genericTankGenerate.Add(new DrawingWheelsCombination());
 
-        JButton creatButton = new JButton("Сгенерировать");
-        creatButton.addActionListener(
+        JButton createButton = new JButton("Сгенерировать");
+        createButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e){
-                    _drawingTank = genericTankGenerate.GenerateTank(pictureBoxWidth,pictureBoxHeight);
+                    _drawingVehicle = genericTankGenerate.GenerateTank(pictureBoxWidth,pictureBoxHeight);
                     canv.repaint();
                 }
             }
         );
-        creatButton.setBounds(pictureBoxWidth/2 - 40, pictureBoxHeight-20, 180, 20);
+        createButton.setBounds(pictureBoxWidth/2 - 40, pictureBoxHeight-20, 180, 20);
 
         add(canv);
-        add(creatButton);
+        add(createButton);
         setVisible(true);
     }
 }
