@@ -8,7 +8,7 @@ public class DrawingSuspensionOrnament implements IOrnamentForm {
     }
 
     public void setDigit(int number) {
-        switch(number){
+        switch(number) {
             case 2:
                 wheels = CountWheels.Two;
                 break;
