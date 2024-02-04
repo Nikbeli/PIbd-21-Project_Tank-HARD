@@ -4,6 +4,12 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -206,6 +212,120 @@ public class FormTankCollection {
                 }
         );
 
+        // Создаём панель меню
+        JMenuBar menuBar = new JMenuBar();
+
+        // Создаём пункты меню
+        JMenu fileMenu = new JMenu("File");
+
+        // Создаём пункты меню
+        JMenuItem openItem = new JMenuItem("Открыть");
+        openItem.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        JFileChooser fileChooser = new JFileChooser();
+
+                        fileChooser.setDialogTitle("Выберите файл для загрузки данных");
+
+                        // Установка фильтра для файлов с определённым расширеним (например, txt)
+                        fileChooser.setFileFilter(new FileNameExtensionFilter("Текстовые файлы (*.txt)", "txt"));
+
+                        fileChooser.setDialogTitle("Выберите файл для загрузки данных");
+                        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                            File selectedFile = fileChooser.getSelectedFile();
+                            if (_storage.LoadData(selectedFile.getAbsolutePath())) {
+                                JOptionPane.showMessageDialog(null, "Загрузка прошла успешно", "Результат", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Не загрузилось", "Результат", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                        ReloadObjects();
+                    }
+                });
+
+        JMenuItem saveItem = new JMenuItem("Сохранить");
+        saveItem.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JFileChooser fileChooser = new JFileChooser();
+                        fileChooser.setDialogTitle("Выберите файл для сохранения данных");
+
+                        // Установка фильтра для файлов с определённым расширением (например, txt)
+                        fileChooser.setFileFilter(new FileNameExtensionFilter("Текстовые файлы (*.txt)", "txt"));
+
+                        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                            File selectedFile = fileChooser.getSelectedFile();
+                            if(_storage.SaveData(selectedFile.getAbsolutePath()))
+                                JOptionPane.showMessageDialog(null, "Сохранение прошло успешно", "Результат", JOptionPane.INFORMATION_MESSAGE);
+                            else
+                                JOptionPane.showMessageDialog(null, "Не сохранилось", "Результат", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+        );
+
+        JMenuItem openItemSingle = new JMenuItem("Открыть одиночный");
+        openItemSingle.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JFileChooser fileChooser = new JFileChooser();
+
+                        fileChooser.setDialogTitle("Выберите файл для загрузки данных");
+
+                        //Установка фильтра для файлов с определённым расширением (например, txt)
+                        fileChooser.setFileFilter(new FileNameExtensionFilter("Текстовые файлы (*.txt)", "txt"));
+
+                        fileChooser.setDialogTitle("Выберите файл для загрузки данных");
+                        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                            File selectedFile = fileChooser.getSelectedFile();
+
+                            if (_storage.LoadDataSingle(selectedFile.getAbsolutePath())) {
+                                JOptionPane.showMessageDialog(null, "Загрузка прошла успешно", "Результат", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Не загрузилось", "Результат", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                        ReloadObjects();
+                    }
+                });
+
+        JMenuItem saveItemSingle = new JMenuItem("Сохранение одиночного");
+        saveItemSingle.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e){
+                        if (jListStorage.getSelectedValue() == null){
+                            JOptionPane.showMessageDialog(null, "Не выбран гараж", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        JFileChooser fileChooser = new JFileChooser();
+                        fileChooser.setDialogTitle("Выберите файл для сохранения данных");
+
+                        // Установка фильтра для файлов с определенным расширением (например, .txt)
+                        fileChooser.setFileFilter(new FileNameExtensionFilter("Текстовые файлы (*.txt)", "txt"));
+
+                        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                            File selectedFile = fileChooser.getSelectedFile();
+                            if (_storage.SaveDataSingle(selectedFile.getAbsolutePath(), jListStorage.getSelectedValue()))
+                                JOptionPane.showMessageDialog(null, "Сохранение прошло успешно", "Результат", JOptionPane.INFORMATION_MESSAGE);
+                            else
+                                JOptionPane.showMessageDialog(null, "Не сохранилось", "Результат", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+        );
+
+        // Добавляем пункты в меню
+        fileMenu.add(openItem);
+        fileMenu.add(saveItem);
+        fileMenu.add(openItemSingle);
+        fileMenu.add(saveItemSingle);
+
+        // Добавляем меню в панель меню
+        menuBar.add(fileMenu);
+
         Frame.setSize(880, 520);
         Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Frame.setLayout(null);
@@ -223,6 +343,8 @@ public class FormTankCollection {
 
         buttonGetRemoved.setBounds(pictureBoxWidth - 10, 390, 170, 20);
 
+        menuBar.setBounds(pictureBoxWidth - 10, 420, 170, 20);
+
         Frame.add(canv);
         Frame.add(ButtonAddVehicle);
         Frame.add(ButtonRemoveTank);
@@ -236,6 +358,7 @@ public class FormTankCollection {
         Frame.add(buttonRemoveSet);
 
         Frame.add(buttonGetRemoved);
+        Frame.add(menuBar);
 
         Frame.setVisible(true);
     }

@@ -86,4 +86,5 @@ public class SetGeneric <T extends Object> {
             }
         };
     }
+    public void clear() { _places.clear(); }
 }

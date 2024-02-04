@@ -14,6 +14,11 @@ public class TanksGenericCollections<T extends DrawingArmoVehicle, U extends IMo
     // Набор объектов
     private SetGeneric<T> _collection;
 
+    // Получение объектов коллекции
+    public Iterable<T> getTanks(final Integer maxTanks) { return _collection.GetTanks(maxTanks); }
+
+    public void clear() { _collection.clear(); }
+
     // Конструктор
     public TanksGenericCollections(int pictureWidth, int pictureHeight) {
         int width = pictureWidth / _placeSizeWidth;
