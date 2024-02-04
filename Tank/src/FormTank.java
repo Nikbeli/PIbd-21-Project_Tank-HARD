@@ -36,7 +36,7 @@ public class FormTank {
 
     public FormTank() {
         SelectedVehicle = null;
-        Frame = new JFrame("Form Tank");
+        Frame = new JFrame("Tank");
         JButton buttonCreateArmoVehicle = new JButton("Добавить бронетехнику");
         JButton buttonCreateTank = new JButton("Добавить танк");
         JButton buttonStrategysStep = new JButton("Шаг");

@@ -47,7 +47,7 @@ public class DrawingTank extends DrawingArmoVehicle {
         if (((EntityTank) ArmoVehicle).BodyKit) {
             int[] xPointsBody = {_startPosX + 52, _startPosX + 52, _startPosX + 40, _startPosX + 15, _startPosX + 15, _startPosX + 60, _startPosX + 90, _startPosX + 120, _startPosX + 100, _startPosX + 95, _startPosX + 90};
             int[] yPointsBody = {_startPosY + 30, _startPosY + 27, _startPosY + 23, _startPosY + 18, _startPosY + 15, _startPosY + 11, _startPosY + 11, _startPosY + 20, _startPosY + 25, _startPosY + 27, _startPosY + 30};
-            int nPointsBody = xPointsBody.length;
+            int nPointsBody = 11;
 
             g.drawPolygon(xPointsBody, yPointsBody, nPointsBody);
             g.fillPolygon(xPointsBody, yPointsBody, nPointsBody);
@@ -66,7 +66,7 @@ public class DrawingTank extends DrawingArmoVehicle {
             // Зенитное орудие
             int[] xPointsGun = {_startPosX + 45, _startPosX + 45, _startPosX + 41, _startPosX + 41, _startPosX + 42, _startPosX + 41, _startPosX + 44, _startPosX + 50, _startPosX + 52, _startPosX + 53, _startPosX + 58};
             int[] yPointsGun = {_startPosY + 12, _startPosY + 10, _startPosY + 8, _startPosY + 7, _startPosY + 5, _startPosY + 4, _startPosY + 3, _startPosY + 3, _startPosY + 5, _startPosY + 7, _startPosY + 10};
-            int nPointsGun = xPointsGun.length;
+            int nPointsGun = 11;
 
             g.fillRect(_startPosX + 50, _startPosY + 5, 20, 2);
             g.drawPolygon(xPointsGun, yPointsGun, nPointsGun);
