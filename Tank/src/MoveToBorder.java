@@ -1,4 +1,4 @@
-public class MoveToBorder extends AbstractStrategy {
+public class MoveToBorder extends AbstractStrategy{
     protected boolean IsTargetDestination() {
         var objParams = GetObjectParameters();
         if (objParams == null) {

@@ -1,11 +1,8 @@
+import com.sun.nio.sctp.InvalidStreamException;
+
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -23,7 +20,7 @@ public class TanksGenericStorage {
     private static String _separatorForObjectWR = ":";
     private static String _separatorForObject = "\\:";
 
-    public boolean SaveDataSingle(String filename, String key) {
+    public void SaveDataSingle(String filename, String key) throws IOException {
         if(new File(filename).exists()) {
             new File(filename).delete();
         }
@@ -32,40 +29,38 @@ public class TanksGenericStorage {
         data.append(key).append("\n");
         for (DrawingArmoVehicle elem: _tankStorages.get(key).getTanks(100)) {
             if(_tankStorages.get(key) == null)
-                return false;
+                throw new InvalidPropertiesFormatException("Ключ не найден. Сохранение невозможно");
 
             if(_tankStorages.get(key) != null)
                 data.append(elem != null ? ExtentionDrawingTank.GetDataForSave(elem, _separatorForObjectWR) + "\n" : "");
         }
 
         if(data.length() == 0)
-            return false;
+            throw new InvalidStreamException("Нет данных для сохранения");
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             writer.write("TankStorageSingle" + System.lineSeparator() + data.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
-    public boolean LoadDataSingle(String filename) {
+    public void LoadDataSingle(String filename) throws IOException {
         if(!new File(filename).exists()) {
-            return false;
+            throw new FileNotFoundException("Файл не найден");
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String s = reader.readLine();
             if(s == null || s.length() == 0)
-                return false;
+                throw new NullPointerException("Нет данных для загрузки");
 
             if(!s.startsWith("TankStorageSingle"))
-                return false;
+                throw new IllegalArgumentException("Неверный формат данных"); //если нет такой записи, то это не те данные
 
             String key = reader.readLine();
             if(key == null || key.length() == 0)
-                return false;
+                throw new NullPointerException("Нет данных для загрузки");
 
             TanksGenericCollections<DrawingArmoVehicle, DrawingObjectTank> collections = new TanksGenericCollections<>(_pictureWidth, _pictureHeight);
             if (_tankStorages.containsKey(key)){
@@ -87,7 +82,7 @@ public class TanksGenericStorage {
             for (String elem : tanksStrings) {
                 DrawingArmoVehicle vehicle = ExtentionDrawingTank.CreateDrawingTank(elem, _separatorForObject, _pictureWidth, _pictureHeight);
                 if(vehicle == null || collections.Add(vehicle) == -1)
-                    return false;
+                    throw new NoSuchElementException("Объект не найден");
             }
 
             if(_tankStorages.containsKey(key))
@@ -95,13 +90,11 @@ public class TanksGenericStorage {
             _tankStorages.put(key, collections);
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
     // Сохранение информации по технике в хранилище в файл
-    public boolean SaveData(String filename) {
+    public void SaveData(String filename) throws IOException {
         if(new File(filename).exists()) {
             new File(filename).delete();
         }
@@ -117,30 +110,28 @@ public class TanksGenericStorage {
         }
 
         if (data.length() == 0)
-            return false;
+            throw new InvalidStreamException("Нет данных для сохранения");
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             writer.write("TankStorage" + System.lineSeparator() + data.toString());
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
     // Загрузка информации по технике в хранилище из файла
-    public boolean LoadData(String filename) {
+    public void LoadData(String filename) throws IOException {
         if (!new File(filename).exists()) {
-            return false;
+            throw new FileNotFoundException("Файл не найден");
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String s = reader.readLine();
             if (s == null || s.length() == 0)
-                return false;
+                throw new NullPointerException("Нет данных для загрузки");
 
             if (!s.startsWith("TankStorage"))
-                return false;
+                throw new IllegalArgumentException("Неверный формат данных"); //если нет такой записи, то это не те данные
 
             _tankStorages.clear();
 
@@ -158,15 +149,13 @@ public class TanksGenericStorage {
                 for (String elem : reversedSet) {
                     DrawingArmoVehicle vehicle = ExtentionDrawingTank.CreateDrawingTank(elem, _separatorForObject, _pictureWidth, _pictureHeight);
                     if (vehicle == null || collection.Add(vehicle) == -1)
-                        return false;
+                        throw new NoSuchElementException("Объект не найден");
                 }
                 _tankStorages.put(record[0], collection);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
     // Словарь (как хранилище)

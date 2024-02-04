@@ -17,18 +17,18 @@ public class SetGeneric <T extends Object> {
     // Добавление объектов в набор
     public int Insert(T tank) {
         if(_places.size() >= _maxCount)
-            return -1;
+            throw new TankStorageOverflowException(_maxCount);
         _places.add(0,tank);
         return 0;
     }
 
     public boolean Insert(T tank, int position) {
         // Проверка позиции
-        if (position < 0 || position > _places.size())
-            return false;
+        if (position < 0 || position >= Count())
+            throw new TankNotFoundException(position);
 
         if (_places.size() >= _maxCount)
-            return false;
+            throw new TankStorageOverflowException(_maxCount);
 
         if (position == _places.size())
             _places.add(tank);
@@ -41,10 +41,11 @@ public class SetGeneric <T extends Object> {
     // Удаление объекта из набора с конкретной позиции
     public boolean Remove(int position) {
         // Проверка позиции
-        if (position < 0 || position >= _places.size())
-            return false;
+        if (position < 0 || position >= Count() || position > _maxCount)
+            throw new TankNotFoundException(position);
+
         _places.remove(position);
-        return true;
+            return true;
     }
 
     // Получение объекта из набора по позиции
