@@ -22,19 +22,19 @@ public class FormTank {
         JButton buttonStrategysStep = new JButton("Шаг");
         JComboBox ComboBoxStrategy = new JComboBox(new String[]{"к центру", "к краю формочки"});
 
-        Icon iconUp = new ImageIcon("Tank//Resources//KeyUp.png");
+        Icon iconUp = new ImageIcon("Resources//KeyUp.png");
         JButton up = new JButton(iconUp);
         up.setName("up");
 
-        Icon iconDown = new ImageIcon("Tank//Resources//KeyDown.png");
+        Icon iconDown = new ImageIcon("Resources//KeyDown.png");
         JButton down = new JButton(iconDown);
         down.setName("down");
 
-        Icon iconRight = new ImageIcon("Tank//Resources//KeyRight.png");
+        Icon iconRight = new ImageIcon("Resources//KeyRight.png");
         JButton right = new JButton(iconRight);
         right.setName("right");
 
-        Icon iconLeft = new ImageIcon("Tank//Resources//KeyLeft.png");
+        Icon iconLeft = new ImageIcon("Resources//KeyLeft.png");
         JButton left = new JButton(iconLeft);
         left.setName("left");
 
