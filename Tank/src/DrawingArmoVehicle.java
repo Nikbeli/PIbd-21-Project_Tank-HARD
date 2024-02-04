@@ -10,6 +10,7 @@ public class DrawingArmoVehicle {
     protected int _startPosY;
     protected int _TankWidth = 160;
     protected int _TankHeight = 55;
+    public IMoveableObject GetMoveableObject() { return new DrawingObjectTank(this);}
 
     public DrawingArmoVehicle(int speed, double weight, Color bodyColor, int _numWheel, int width, int height) {
         _pictureWidth = width;
@@ -34,6 +35,16 @@ public class DrawingArmoVehicle {
                 break;
         }
         OrnamentsForm.setDigit(_numWheel);
+    }
+
+    protected DrawingArmoVehicle(EntityArmoVehicle vehicle, IOrnamentForm ornamentsForm, int width, int height) {
+        if (height < _pictureHeight || width < _pictureWidth)
+            return;
+        _pictureWidth = width;
+        _pictureHeight = height;
+        ArmoVehicle = vehicle;
+        OrnamentsForm = ornamentsForm;
+        OrnamentsForm.setDigit(ArmoVehicle.numWheel);
     }
 
     public void SetPosition(int x, int y) {

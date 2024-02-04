@@ -14,6 +14,3 @@ public class EntityTank extends EntityArmoVehicle {
         Tower = tower;
     }
 }
-
-
-
