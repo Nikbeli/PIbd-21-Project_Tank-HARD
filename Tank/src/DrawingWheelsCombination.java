@@ -18,6 +18,9 @@ public class DrawingWheelsCombination implements IOrnamentForm {
             case 4:
                 wheels = CountWheels.Four;
                 break;
+            case 5:
+                wheels = CountWheels.Five;
+                break;
             default:
                 wheels = CountWheels.Two;
                 break;
@@ -45,6 +48,10 @@ public class DrawingWheelsCombination implements IOrnamentForm {
     }
 
     public void Draw(Graphics g, int _startPosX, int _startPosY) {
+        DrawWheels(g,_startPosX, _startPosY);
+        DrawSuspension(g, _startPosX, _startPosY);
+        CaterpillarStar(g,_startPosX + 5, _startPosY + 12);
+
         if (wheels == CountWheels.Two){
             DrawWheels(g,_startPosX, _startPosY);
             DrawWheels(g,_startPosX + 100, _startPosY);

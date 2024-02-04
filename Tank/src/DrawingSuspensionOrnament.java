@@ -8,7 +8,7 @@ public class DrawingSuspensionOrnament implements IOrnamentForm {
     }
 
     public void setDigit(int number) {
-        switch(number) {
+        switch(number){
             case 2:
                 wheels = CountWheels.Two;
                 break;
@@ -17,6 +17,9 @@ public class DrawingSuspensionOrnament implements IOrnamentForm {
                 break;
             case 4:
                 wheels = CountWheels.Four;
+                break;
+            case 5:
+                wheels = CountWheels.Five;
                 break;
             default:
                 wheels = CountWheels.Two;
@@ -36,6 +39,9 @@ public class DrawingSuspensionOrnament implements IOrnamentForm {
     }
 
     public void Draw(Graphics g, int _startPosX, int _startPosY) {
+        DrawWheels(g,_startPosX, _startPosY);
+        DrawSuspension(g, _startPosX, _startPosY);
+
         if (wheels == CountWheels.Two) {
             DrawWheels(g,_startPosX, _startPosY);
             DrawWheels(g,_startPosX + 100, _startPosY);
@@ -54,7 +60,7 @@ public class DrawingSuspensionOrnament implements IOrnamentForm {
             DrawSuspension(g,_startPosX + 73, _startPosY);
         }
 
-        if (wheels == CountWheels.Four) {
+        if (wheels == CountWheels.Four || wheels == CountWheels.Five) {
             DrawWheels(g,_startPosX, _startPosY);
             DrawWheels(g,_startPosX + 25, _startPosY);
             DrawWheels(g,_startPosX + 50, _startPosY);

@@ -7,6 +7,7 @@ public class EntityArmoVehicle {
         return Weight;
     }
     public Color BodyColor;
+    public void setBodyColor(Color color) { BodyColor = color; }
     public double Step;
     public int numWheel;
 

@@ -8,7 +8,7 @@ public class DrawingStarOrnament implements IOrnamentForm {
     }
 
     public void setDigit(int number) {
-        switch(number) {
+        switch(number){
             case 2:
                 wheels = CountWheels.Two;
                 break;
@@ -17,6 +17,9 @@ public class DrawingStarOrnament implements IOrnamentForm {
                 break;
             case 4:
                 wheels = CountWheels.Four;
+                break;
+            case 5:
+                wheels = CountWheels.Five;
                 break;
             default:
                 wheels = CountWheels.Two;
@@ -37,8 +40,10 @@ public class DrawingStarOrnament implements IOrnamentForm {
         g.setColor(Color.BLACK);
         g.fillOval(10 + _startPosX, 42 + _startPosY, 20, 20);
     }
-
     public void Draw(Graphics g, int _startPosX, int _startPosY) {
+        DrawWheels(g,_startPosX, _startPosY);
+        CaterpillarStar(g,_startPosX + 5, _startPosY + 12);
+
         if (wheels == CountWheels.Two){
             DrawWheels(g,_startPosX, _startPosY);
             DrawWheels(g,_startPosX + 100, _startPosY);

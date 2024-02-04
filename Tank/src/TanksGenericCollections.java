@@ -72,6 +72,8 @@ public class TanksGenericCollections<T extends DrawingArmoVehicle, U extends IMo
         int i = 0;
         for (T tank : _collection.GetTanks(100)) {
             if (tank != null) {
+                tank._pictureHeight = _pictureHeight;
+                tank._pictureWidth = _pictureWidth;
                 tank.SetPosition((i % (_pictureWidth / _placeSizeWidth)) * _placeSizeWidth, (i / (_pictureWidth / _placeSizeWidth)) * _placeSizeHeight);
                 if (tank instanceof DrawingTank)
                     ((DrawingTank) tank).DrawTransport((Graphics2D) g);
