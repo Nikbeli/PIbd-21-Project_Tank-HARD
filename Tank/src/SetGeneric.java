@@ -44,7 +44,7 @@ public class SetGeneric <T extends Object> {
         if (position < 0 || position >= _places.size())
             return false;
         _places.remove(position);
-            return true;
+        return true;
     }
 
     // Получение объекта из набора по позиции
