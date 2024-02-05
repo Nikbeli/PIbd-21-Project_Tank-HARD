@@ -45,7 +45,7 @@ public class SetGeneric <T extends Object> {
             throw new TankNotFoundException(position);
 
         _places.remove(position);
-            return true;
+        return true;
     }
 
     // Получение объекта из набора по позиции
