@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <File name="error" fileName="Errors.log" append="true">
+            <PatternLayout>
+                <Pattern>
+                    [%-5level] %msg (%d{dd.MM.yyyy})%n
+                </Pattern>
+            </PatternLayout>
+            <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+        </File>
+        <File name="info" fileName="Infos.log" append="true">
+            <PatternLayout>
+                <Pattern>
+                    [%-5level] %msg (%d{dd.MM.yyyy})%n
+                </Pattern>
+            </PatternLayout>
+            <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="ACCEPT"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Logger name="logger" level="info" additivity="false">
+            <AppenderRef ref="info" level="INFO"/>
+            <AppenderRef ref="error" level="WARN"/>
+        </Logger>
+    </Loggers>
+</Configuration>

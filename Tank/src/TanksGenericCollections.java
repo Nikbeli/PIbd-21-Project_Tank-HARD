@@ -39,9 +39,8 @@ public class TanksGenericCollections<T extends DrawingArmoVehicle, U extends IMo
     // Перегрузка оператора вычитания
     public T remove(int pos) {
         T obj = _collection.Get(pos);
-        if (obj != null) {
-            _collection.Remove(pos);
-        }
+
+        _collection.Remove(pos);
         return obj;
     }
 

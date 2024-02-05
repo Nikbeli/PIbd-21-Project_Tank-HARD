@@ -14,10 +14,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.apache.logging.log4j.Logger;
+
 public class FormTankCollection {
     private class Canvas extends JComponent {
-        public Canvas() {
-        }
+        public Canvas() { }
 
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -61,7 +62,13 @@ public class FormTankCollection {
         }
     }
 
-    FormTankCollection() {
+    // Логгер
+    private Logger logger;
+
+    FormTankCollection(Logger logger) {
+        System.setProperty("log4j.configutationFile", "src//log4j2.xml");
+        this.logger = logger;
+
         listModel = new DefaultListModel<String>();
         jListStorage = new JList<String>(listModel);
         canv = new Canvas();
@@ -73,6 +80,7 @@ public class FormTankCollection {
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         if (jListStorage.getSelectedIndex() == -1) {
+                            logger.warn("Добавление объекта в несуществующий набор");
                             return;
                         }
                         var obj = _storage.get(jListStorage.getSelectedValue());
@@ -84,11 +92,20 @@ public class FormTankCollection {
                         form.buttonAdd.addActionListener(
                                 new ActionListener() {
                                     public void actionPerformed(ActionEvent e) {
-                                        if (obj != null && obj.Add(form._vehicle) != -1) {
-                                            JOptionPane.showMessageDialog(null, "Объект добавлен", "Информация", JOptionPane.INFORMATION_MESSAGE);
-                                            Draw();
-                                        } else {
+                                        try {
+                                            if (obj != null && obj.Add(form._vehicle) != -1) {
+                                                logger.info("Добавлен новый объект");
+                                                JOptionPane.showMessageDialog(null, "Объект добавлен", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                                                Draw();
+                                            }
+                                        } catch (TankStorageOverflowException ex) {
+                                            logger.warn("Коллекция переполнена: "+ex.getMessage());
+                                            JOptionPane.showMessageDialog(null, ex.getMessage());
                                             JOptionPane.showMessageDialog(null, "Не удалось добавить объект", "Информация", JOptionPane.INFORMATION_MESSAGE);
+
+                                        } catch (Exception ex){
+                                            logger.fatal("Неизвестная ошибка: "+ex.getMessage());
+                                            JOptionPane.showMessageDialog(null, "Ошибка. Неизвестная ошибка: "+ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
                                         }
                                         form.Frame.dispose();
                                     }
@@ -106,6 +123,7 @@ public class FormTankCollection {
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         if (jListStorage.getSelectedIndex() == -1) {
+                            logger.warn("Удаление объекта из несуществующего набора");
                             return;
                         }
                         var obj = _storage.get(jListStorage.getSelectedValue());
@@ -127,13 +145,25 @@ public class FormTankCollection {
                         }
 
                         int pos = Integer.parseInt(TextBoxNumber.getText());
-                        var removed = obj.remove(pos);
-                        if (removed != null) {
-                            Queue.add(removed);
-                            JOptionPane.showMessageDialog(null, "Объект удален", "Информация", JOptionPane.INFORMATION_MESSAGE);
-                            Draw();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Не удалось удалить объект", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                        try {
+                            var removed = obj.remove(pos);
+                            if (removed != null) {
+                                JOptionPane.showMessageDialog(null, "Объект удален", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                                Queue.add(removed);
+                                Draw();
+                                logger.info("Объект с позиции " + pos + "удалён");
+                            }
+                            else
+                            {
+                                JOptionPane.showMessageDialog(null, "Не удалось удалить объект", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                                logger.info("Не удалось удалить объект с позиции " + pos);
+                            }
+                        } catch (TankNotFoundException ex) {
+                            logger.warn("Не удалось удалить объект с позиции"+ pos);
+                            JOptionPane.showMessageDialog(null, ex.getMessage());
+                        } catch (Exception ex) {
+                            logger.fatal("Неизвестная ошибка: " +ex.getMessage());
+                            JOptionPane.showMessageDialog(null, "Неизвестная ошибка: "+ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 }
@@ -145,6 +175,7 @@ public class FormTankCollection {
                     public void actionPerformed(ActionEvent e) {
                         if (Queue.size() == 0) {
                             JOptionPane.showMessageDialog(null, "Нет удалённых", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                            logger.info("Нет удалённых объектов");
                             return;
                         }
                         FormTank form = new FormTank();
@@ -180,10 +211,12 @@ public class FormTankCollection {
                     public void actionPerformed(ActionEvent e) {
                         if (textBoxSetName.getText().length() == 0) {
                             JOptionPane.showMessageDialog(null, "Не все данные заполнены", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                            logger.warn("Не все данные заполнены");
                             return;
                         }
                         _storage.AddSet(textBoxSetName.getText());
                         ReloadObjects();
+                        logger.info("Набор добавлен: "+textBoxSetName.getText());
                     }
                 }
         );
@@ -201,12 +234,14 @@ public class FormTankCollection {
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         if (jListStorage.getSelectedIndex() == -1) {
+                            logger.warn("Удаление несуществующего набора");
                             return;
                         }
                         if (JOptionPane.showConfirmDialog(null, "Удалить объект " + jListStorage.getSelectedValue() + "?", "Удаление", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
                             return;
                         }
                         _storage.DelSet(jListStorage.getSelectedValue());
+                        logger.info("Гараж "+jListStorage.getSelectedValue()+" Удалён");
                         ReloadObjects();
                     }
                 }
@@ -233,10 +268,15 @@ public class FormTankCollection {
                         fileChooser.setDialogTitle("Выберите файл для загрузки данных");
                         if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                             File selectedFile = fileChooser.getSelectedFile();
-                            if (_storage.LoadData(selectedFile.getAbsolutePath())) {
-                                JOptionPane.showMessageDialog(null, "Загрузка прошла успешно", "Результат", JOptionPane.INFORMATION_MESSAGE);
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Не загрузилось", "Результат", JOptionPane.ERROR_MESSAGE);
+
+                            try {
+                                _storage.LoadData(fileChooser.getSelectedFile().getAbsolutePath());
+                                ReloadObjects();
+                                logger.info("Загрузка всех объектов из файла: " + fileChooser.getSelectedFile().getAbsolutePath());
+                                JOptionPane.showMessageDialog(null, "Загрузка всех объектов прошла успешно", "Результат", JOptionPane.INFORMATION_MESSAGE);
+                            } catch (Exception ex) {
+                                logger.error("\n" + "Ошибка при загрузке всех объектов из файла: " + ex.getMessage());
+                                JOptionPane.showMessageDialog(null,"Ошибка при загрузке всех объектов" + ex.getMessage(), "Результат", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                         ReloadObjects();
@@ -256,10 +296,15 @@ public class FormTankCollection {
 
                         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                             File selectedFile = fileChooser.getSelectedFile();
-                            if(_storage.SaveData(selectedFile.getAbsolutePath()))
-                                JOptionPane.showMessageDialog(null, "Сохранение прошло успешно", "Результат", JOptionPane.INFORMATION_MESSAGE);
-                            else
-                                JOptionPane.showMessageDialog(null, "Не сохранилось", "Результат", JOptionPane.ERROR_MESSAGE);
+
+                            try {
+                                _storage.SaveData(fileChooser.getSelectedFile().getAbsolutePath());
+                                logger.info("Сохранение всех объектов в файл: " + fileChooser.getSelectedFile().getAbsolutePath());
+                                JOptionPane.showMessageDialog(null,"Сохранение объектов прошло успешно", "Результат", JOptionPane.INFORMATION_MESSAGE);
+                            } catch (Exception ex) {
+                                logger.error("Error saving all maps to file: " +ex.getMessage());
+                                JOptionPane.showMessageDialog(null, "Ошибка при сохранении объектов: "+ex.getMessage(), "Результат", JOptionPane.ERROR_MESSAGE);
+                            }
                         }
                     }
                 }
@@ -281,10 +326,14 @@ public class FormTankCollection {
                         if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                             File selectedFile = fileChooser.getSelectedFile();
 
-                            if (_storage.LoadDataSingle(selectedFile.getAbsolutePath())) {
+                            try {
+                                _storage.LoadDataSingle(fileChooser.getSelectedFile().getAbsolutePath());
+                                ReloadObjects();
+                                logger.info("Загрузка всех объектов из файла: " + fileChooser.getSelectedFile().getAbsolutePath());
                                 JOptionPane.showMessageDialog(null, "Загрузка прошла успешно", "Результат", JOptionPane.INFORMATION_MESSAGE);
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Не загрузилось", "Результат", JOptionPane.ERROR_MESSAGE);
+                            } catch (Exception ex) {
+                                logger.error("\n" + "Ошибка при загрузке всех объектов из файла: " + ex.getMessage());
+                                JOptionPane.showMessageDialog(null, "Не загрузилось" + ex.getMessage(), "Результат", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                         ReloadObjects();
@@ -308,10 +357,15 @@ public class FormTankCollection {
 
                         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                             File selectedFile = fileChooser.getSelectedFile();
-                            if (_storage.SaveDataSingle(selectedFile.getAbsolutePath(), jListStorage.getSelectedValue()))
-                                JOptionPane.showMessageDialog(null, "Сохранение прошло успешно", "Результат", JOptionPane.INFORMATION_MESSAGE);
-                            else
-                                JOptionPane.showMessageDialog(null, "Не сохранилось", "Результат", JOptionPane.ERROR_MESSAGE);
+
+                            try {
+                                _storage.SaveDataSingle(fileChooser.getSelectedFile().getAbsolutePath(), jListStorage.getSelectedValue());
+                                logger.info("Сохранение всех объектов в файл: " + fileChooser.getSelectedFile().getAbsolutePath());
+                                JOptionPane.showMessageDialog(null,"Сохранение прошло успешно", "Результат", JOptionPane.INFORMATION_MESSAGE);
+                            } catch (Exception ex) {
+                                logger.error("Error saving all maps to file: " +ex.getMessage());
+                                JOptionPane.showMessageDialog(null, "Не сохранилось: "+ex.getMessage(), "Результат", JOptionPane.ERROR_MESSAGE);
+                            }
                         }
                     }
                 }
